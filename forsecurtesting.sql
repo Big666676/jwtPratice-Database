@@ -5,7 +5,7 @@
 -- go
 -- CREATE DATABASE javapratice
 -- GO
-Use javapratice
+Use jwt0222
 GO
 
 
@@ -35,33 +35,34 @@ GO
 
 
 /*==========================================================================*/
-DROP TABLE if exists customerroles;
-DROP TABLE if exists customer;
-CREATE TABLE customer (
-   custid     nvarchar(20) primary key,
-   password   varbinary(50),
+DROP TABLE if exists user_roles;
+DROP TABLE if exists user_detail;
+CREATE TABLE user_detail (
+   [user_id]    nvarchar(20) primary key,
+   password   varchar(50),
    email      nvarchar(30),
    birth      datetime,
+   jwt_token varchar(100),
    bcryptpwd  varchar(70),
    enabled    integer
 );
 GO
-INSERT INTO customer values ('Alex', 0, 'alex@lab.com', '2001-07-20','{bcrypt}$2a$10$kBnFAMiCNLfYBT3tHoUICe.9XF7lVrdoiNgg2giOtYDBU6wvjB9zW', 1);
-INSERT INTO customer values ('Babe', 0, 'babe@lab.com', '2003-03-20','{bcrypt}$2a$10$NCgDqWoT7jxSrQ95kOhAh.POsUNP29/CSnIU52Bu7HilJ9/4W.YJW', 1);
-INSERT INTO customer values ('Carol', 0, 'carol@lab.com', '2001-09-11','{bcrypt}$2a$10$kyLUYF.3ihX/ew8h3si9gO4b857VXLuAjRChpIsiRrWK/tMUqXLw.', 1);
-INSERT INTO customer values ('Dave', 0, 'dave@lab.com', '2001-01-20','{bcrypt}$2a$10$kcdflBsoxpEuxq3WRLgpOeKKekEoNGk8wlgX9BM88OtKQbGpmSAbu', 1);
-INSERT INTO customer values ('Ellen', 0, 'ellen@lab.com', '2000-05-20','{bcrypt}$2a$10$.AYyb/FvdVsvAKKd1AhfUuKVUvgpwIFTfcMk5mWbzppUGCW56eGfS', 1);
+INSERT INTO user_detail values ('Alex', 'aaa', 'alex@lab.com', '2001-07-20',null,'{bcrypt}$2a$10$kBnFAMiCNLfYBT3tHoUICe.9XF7lVrdoiNgg2giOtYDBU6wvjB9zW', 1);
+INSERT INTO user_detail values ('Babe', 'bbb', 'babe@lab.com', '2003-03-20',null,'{bcrypt}$2a$10$NCgDqWoT7jxSrQ95kOhAh.POsUNP29/CSnIU52Bu7HilJ9/4W.YJW', 1);
+INSERT INTO user_detail values ('Carol', 'ccc', 'carol@lab.com', '2001-09-11',null,'{bcrypt}$2a$10$kyLUYF.3ihX/ew8h3si9gO4b857VXLuAjRChpIsiRrWK/tMUqXLw.', 1);
+INSERT INTO user_detail values ('Dave','ddd', 'dave@lab.com', '2001-01-20',null,'{bcrypt}$2a$10$kcdflBsoxpEuxq3WRLgpOeKKekEoNGk8wlgX9BM88OtKQbGpmSAbu', 1);
+INSERT INTO user_detail values ('Ellen', 'eee', 'ellen@lab.com', '2000-05-20',null,'{bcrypt}$2a$10$.AYyb/FvdVsvAKKd1AhfUuKVUvgpwIFTfcMk5mWbzppUGCW56eGfS', 1);
 GO
 /*==========================================================================*/
-CREATE TABLE customerroles(
+CREATE TABLE user_roles(
   rolesid integer primary key identity(1,1),
-	custid NVARCHAR(20) NOT NULL ,
+	[user_id] NVARCHAR(20) NOT NULL ,
 	roles VARCHAR(50)  NOT NULL DEFAULT('ROLE_EMPLOYEE'),
-	FOREIGN KEY(custid) REFERENCES customer(custid),
-	CONSTRAINT authorities_custname_role UNIQUE (custid ,roles)
+	FOREIGN KEY([user_id]) REFERENCES user_detail([user_id]),
+	CONSTRAINT authorities_custname_role UNIQUE ([user_id] ,roles)
 )
 GO
-INSERT INTO customerroles 
+INSERT INTO user_roles 
 VALUES
 ('Alex', 'ROLE_EMPLOYEE'),
 ('Alex', 'ROLE_MANAGER'),
